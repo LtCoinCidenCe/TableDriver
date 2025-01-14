@@ -19,7 +19,7 @@ public class UserController(ILogger<UserController> logger, UserService userServ
     }
 
     [HttpPost]
-    public User CreateNewUser(UserNew newUser)
+    public IActionResult CreateNewUser(UserNew newUser)
     {
         User entity = new()
         {
@@ -29,8 +29,28 @@ public class UserController(ILogger<UserController> logger, UserService userServ
             Passhash = SHA256.HashData(Encoding.UTF8.GetBytes(newUser.Password + "SuperSalt")),
             Gender = newUser.Gender,
         };
-        User result = userService.CreateNewUser(entity);
-        return result;
+        User? result = userService.CreateNewUser(entity);
+        if (result is null)
+        {
+            return Conflict();
+        }
+        return Created("useless header Location", result);
+    }
+
+    [HttpPatch("{userid}/introduction")]
+    public IActionResult ModifyIntroduction([FromRoute] string userid, string newIntro)
+    {
+        int updatedRows = userService.ModifyIntroduction(userid, newIntro);
+        if (updatedRows == 0)
+        {
+            return NotFound();
+        }
+        else if (updatedRows == 1)
+        {
+            return NoContent();
+        }
+        // should never get here
+        throw new Exception("should not update so many users' introduction");
     }
 }
 

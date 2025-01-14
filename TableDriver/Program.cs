@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TableDriver.DBContexts;
+using TableDriver.Services;
 using TableDriver.Utilities;
 
 namespace TableDriver;
@@ -26,6 +27,7 @@ public class Program
             .EnableSensitiveDataLogging()
             .EnableDetailedErrors();
         });
+        builder.Services.AddScoped<UserService>();
 
         var app = builder.Build();
 

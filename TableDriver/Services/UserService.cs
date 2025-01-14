@@ -16,10 +16,41 @@ public class UserService(UserContext userContext)
         return userContext.User.SingleOrDefault(u => u.ID == id);
     }
 
-    public User CreateNewUser(User user)
+    public User? CreateNewUser(User user)
     {
         userContext.User.Add(user);
-        userContext.SaveChanges();
+        try
+        {
+            userContext.SaveChanges();
+        }
+        catch (DbUpdateException dbex)
+        {
+            if (dbex.InnerException is null)
+            {
+                throw;
+            }
+            if (dbex.InnerException.Message.StartsWith("Duplicate entry"))
+            {
+                return null;
+            }
+        }
         return user;
+    }
+
+    public int ModifyIntroduction(string userid, string newIntro)
+    {
+        // userid can possibly be an id so check first
+        if (ulong.TryParse(userid, out var id))
+        {
+            int callupdate = userContext.User.Where(user => user.ID == id)
+                .ExecuteUpdate(setter => setter.SetProperty(row => row.Introduction, newIntro));
+            return callupdate;
+        }
+        else
+        {
+            int callupdate = userContext.User.Where(user => user.Username == userid)
+                .ExecuteUpdate(setter => setter.SetProperty(row => row.Introduction, newIntro));
+            return callupdate;
+        }
     }
 }
