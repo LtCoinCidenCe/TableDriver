@@ -1,10 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TableDriver.Models.Misc;
 
 namespace TableDriver.Models
 {
     // This dictates the database columns
+    [Index(nameof(Username),IsUnique =true)]
+    [Index("DisplayName")]
     public class User
     {
         public ulong ID { get; set; }
