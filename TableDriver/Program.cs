@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using TableDriver.DBContexts;
 using TableDriver.Utilities;
 
@@ -6,7 +7,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var dburl = Env.DATABASEURL; // spin up
+        string dbConnectionString = $"server={Env.DATABASEURL};port=3306;database=TableDriver;uid=root;password=mysecretpassword;SslMode=Disabled";
 
         var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,14 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        builder.Services.AddDbContext<UserContext>();
+        builder.Services.AddDbContext<UserContext>(dbContextOptions =>
+        {
+            var serverVersion = new MySqlServerVersion(new Version(5, 7, 44));
+            dbContextOptions.UseMySql(dbConnectionString, serverVersion)
+            .LogTo(Console.WriteLine, LogLevel.Information)
+            .EnableSensitiveDataLogging()
+            .EnableDetailedErrors();
+        });
 
         var app = builder.Build();
 

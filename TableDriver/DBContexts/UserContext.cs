@@ -7,7 +7,7 @@ namespace TableDriver.DBContexts;
 public class UserContext : DbContext
 {
     ILogger<UserContext> logger;
-    string connectionString = $"server={Env.DATABASEURL};port=3306;database=bloglist;uid=root;password=mysecretpassword;SslMode=Disabled";
+
     public UserContext(
             DbContextOptions<UserContext> options,
             ILogger<UserContext> dilogger) : base(options)
