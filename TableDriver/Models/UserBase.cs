@@ -6,18 +6,9 @@ using Microsoft.EntityFrameworkCore;
 namespace TableDriver.Models
 {
     // This dictates the database columns
-    [Index(nameof(Username), IsUnique = true)]
-    [Index("DisplayName")]
-    public abstract class UserBase
+    public abstract class UserBase:UserNonSensitive
     {
         public ulong ID { get; set; }
-
-        [MaxLength(57)]
-        [RegularExpression("^[A-Za-z][A-Za-z0-9]{4,55}$")]
-        public string Username { get; set; } = string.Empty;
-
-        [MaxLength(60)]
-        public string DisplayName { get; set; } = string.Empty;
 
         [MaxLength(32)]
         public byte[] Passhash { get; set; } = new byte[32];
@@ -28,9 +19,6 @@ namespace TableDriver.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime LastUpdatedAt { get; set; }
 
-        [MaxLength(120)]
-        public string Introduction { get; set; } = string.Empty;
-
         public Gender Gender { get; set; } = Gender.secret;
 
         [Obsolete(message:"It doesn't work")]
@@ -38,7 +26,7 @@ namespace TableDriver.Models
         {
             // can't do this
             throw new NotImplementedException();
-            return this as T;
+            // return this as T;
         }
 
         public T CloneToType<T>() where T : UserBase, new()

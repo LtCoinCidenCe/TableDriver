@@ -14,7 +14,7 @@ namespace TableDriver.Controllers;
 public class UserController(ILogger<UserController> logger, UserService userService) : ControllerBase
 {
     [HttpGet]
-    public IEnumerable<User> GetAllUsers()
+    public IEnumerable<UserNonSensitive> GetAllUsers()
     {
         logger.LogInformation(Request.GetDisplayUrl());
         return userService.AllUsers();

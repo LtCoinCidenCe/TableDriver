@@ -1,15 +1,27 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TableDriver.DBContexts;
 using TableDriver.Models;
-using TableDriver.Models.Misc;
 
 namespace TableDriver.Services;
 
 public class UserService(UserContext userContext)
 {
-    public List<User> AllUsers()
+    public List<UserNonSensitive> AllUsers()
     {
-        return userContext.User.AsNoTracking().ToList();
+        // this is a wonderful query
+        // with contains being SQL IN
+        // with Select filter being SQL SELECT
+        // just so beautiful
+        List<ulong> smallIDs = new List<ulong>() { 1, 2, 3, 4, 5, 6, 7, 8 };
+        return userContext.User
+            .AsNoTracking()
+            .Where(row => smallIDs.Contains(row.ID))
+            .Select(row => new UserNonSensitive()
+            {
+                Username = row.Username,
+                DisplayName = row.DisplayName,
+                Introduction = row.Introduction
+            }).ToList();
     }
 
     public UserBase? GetUserbyID(string sid)
