@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TableDriver.DBContexts;
 using TableDriver.Models;
+using TableDriver.Models.Misc;
 
 namespace TableDriver.Services;
 
@@ -11,15 +12,34 @@ public class UserService(UserContext userContext)
         return userContext.User.AsNoTracking().ToList();
     }
 
-    public User? GetUserbyID(ulong id)
+    public UserBase? GetUserbyID(string sid)
     {
-        return userContext.User.SingleOrDefault(u => u.ID == id);
+        if (ulong.TryParse(sid, out var id))
+        {
+            UserMemory? inMemory = userContext.UserMemory.SingleOrDefault(u => u.ID == id);
+            if (inMemory is not null)
+            {
+                return inMemory;
+            }
+            return userContext.User.SingleOrDefault(u => u.ID == id);
+        }
+        else
+        {
+            UserMemory? inMemory = userContext.UserMemory.SingleOrDefault(u => u.Username == sid);
+            if (inMemory is not null)
+            {
+                return inMemory;
+            }
+            return userContext.User.SingleOrDefault(u => u.Username == sid);
+        }
     }
 
     public User? CreateNewUser(User user)
     {
+        UserMemory userMemory = user.CloneToType<UserMemory>();
         // username is unique and failed insertion still does auto increment on id
         userContext.User.Add(user);
+        userContext.UserMemory.Add(userMemory);
         try
         {
             userContext.SaveChanges();

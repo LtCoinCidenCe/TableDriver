@@ -8,7 +8,7 @@ namespace TableDriver.Models
     // This dictates the database columns
     [Index(nameof(Username), IsUnique = true)]
     [Index("DisplayName")]
-    public abstract class UserAbstract
+    public abstract class UserBase
     {
         public ulong ID { get; set; }
 
@@ -32,5 +32,28 @@ namespace TableDriver.Models
         public string Introduction { get; set; } = string.Empty;
 
         public Gender Gender { get; set; } = Gender.secret;
+
+        [Obsolete(message:"It doesn't work")]
+        public T TransformToType<T>() where T : UserBase
+        {
+            // can't do this
+            throw new NotImplementedException();
+            return this as T;
+        }
+
+        public T CloneToType<T>() where T : UserBase, new()
+        {
+            return new T()
+            {
+                ID = ID,
+                Username = Username,
+                DisplayName = DisplayName,
+                Gender = Gender,
+                Introduction = Introduction,
+                Passhash = Passhash,
+                CreatedAt = CreatedAt,
+                LastUpdatedAt = LastUpdatedAt,
+            };
+        }
     }
 }

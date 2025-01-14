@@ -1,11 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using TableDriver.Models.Misc;
-
-namespace TableDriver.Models
+﻿namespace TableDriver.Models
 {
-    public class User: UserAbstract
+    public class User : UserBase
     {
     }
 }

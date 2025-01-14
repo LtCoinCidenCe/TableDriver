@@ -20,6 +20,17 @@ public class UserController(ILogger<UserController> logger, UserService userServ
         return userService.AllUsers();
     }
 
+    [HttpGet("{id}")]
+    public IActionResult GetUserById(string id)
+    {
+        UserBase? result = userService.GetUserbyID(id);
+        if (result is null)
+        {
+            return NotFound();
+        }
+        return Ok(result);
+    }
+
     [HttpPost]
     public IActionResult CreateNewUser(UserNew newUser)
     {
