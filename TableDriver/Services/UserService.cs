@@ -18,6 +18,7 @@ public class UserService(UserContext userContext)
 
     public User? CreateNewUser(User user)
     {
+        // username is unique and failed insertion still does auto increment on id
         userContext.User.Add(user);
         try
         {
