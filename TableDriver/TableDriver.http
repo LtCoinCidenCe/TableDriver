@@ -1,0 +1,6 @@
+@TableDriver_HostAddress = http://localhost:5192
+
+GET {{TableDriver_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
