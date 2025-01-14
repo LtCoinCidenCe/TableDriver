@@ -50,7 +50,7 @@
     "migrations add": {
       "commandName": "Executable",
       "executablePath": "dotnet",
-      "commandLineArgs": "ef migrations add InitialMigration",
+      "commandLineArgs": "ef migrations add OKTheMemory",
       "workingDirectory": "$(ProjectDir)",
       "environmentVariables": {
         "DATABASEURL": "localhost",

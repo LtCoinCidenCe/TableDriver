@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using System.Text;
@@ -15,6 +16,7 @@ public class UserController(ILogger<UserController> logger, UserService userServ
     [HttpGet]
     public IEnumerable<User> GetAllUsers()
     {
+        logger.LogInformation(Request.GetDisplayUrl());
         return userService.AllUsers();
     }
 

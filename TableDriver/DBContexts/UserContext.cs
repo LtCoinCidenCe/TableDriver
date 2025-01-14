@@ -15,5 +15,11 @@ public class UserContext : DbContext
         logger = dilogger;
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<UserMemory>().HasTableOption("engine", "MEMORY");
+    }
+
     public DbSet<User> User => Set<User>();
+    public DbSet<UserMemory> UserMemory => Set<UserMemory>();
 }
