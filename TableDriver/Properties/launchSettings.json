@@ -85,6 +85,16 @@
         "DATABASEURL": "localhost",
         "APPSECRET": "secher"
       }
+    },
+    "migration script": {
+      "commandName": "Executable",
+      "executablePath": "dotnet",
+      "commandLineArgs": "ef migrations script --output SQLScript/initUser.sqlraw",
+      "workingDirectory": "$(ProjectDir)",
+      "environmentVariables": {
+        "DATABASEURL": "localhost",
+        "APPSECRET": "secher"
+      }
     }
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
