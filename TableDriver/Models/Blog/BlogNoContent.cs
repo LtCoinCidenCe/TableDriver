@@ -9,6 +9,7 @@ namespace TableDriver.Models.Blog
         public ulong ID { get; set; }
 
         [Column(name: "authorid")]
+        [InverseProperty("Blogs")]
         [DeleteBehavior(DeleteBehavior.NoAction)]
         public User.User? Author { get; set; }
 
