@@ -50,7 +50,7 @@
     "migrations add": {
       "commandName": "Executable",
       "executablePath": "dotnet",
-      "commandLineArgs": "ef migrations add BlogInstance",
+      "commandLineArgs": "ef migrations add WoQuanDouYao",
       "workingDirectory": "$(ProjectDir)",
       "environmentVariables": {
         "DATABASEURL": "localhost",

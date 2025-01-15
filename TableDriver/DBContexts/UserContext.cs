@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TableDriver.Models;
+using TableDriver.Models.Blog;
 using TableDriver.Models.User;
 
 namespace TableDriver.DBContexts;
