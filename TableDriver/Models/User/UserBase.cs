@@ -20,6 +20,9 @@ namespace TableDriver.Models.User
 
         public Gender Gender { get; set; } = Gender.secret;
 
+        [InverseProperty("Author")]
+        public List<Blog.Blog>? Blogs { get; set; }
+
         [Obsolete(message: "It doesn't work")]
         public T TransformToType<T>() where T : UserBase
         {
