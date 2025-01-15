@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TableDriver.Models;
 using TableDriver.Models.User;
 
 namespace TableDriver.DBContexts;
@@ -26,4 +27,5 @@ public class UserContext : DbContext
 
     public DbSet<User> User => Set<User>();
     public DbSet<UserMemory> UserMemory => Set<UserMemory>();
+    public DbSet<Blog> Blog => Set<Blog>();
 }
