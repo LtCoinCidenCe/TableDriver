@@ -9,7 +9,7 @@ namespace TableDriver.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UserController(ILogger<UserController> logger, UserService userService) : ControllerBase
+public class UserController(ILogger<UserController> logger, UserService userService, BlogService blogService) : ControllerBase
 {
     [HttpGet]
     public IEnumerable<UserNonSensitive> GetAllUsers()
@@ -26,6 +26,13 @@ public class UserController(ILogger<UserController> logger, UserService userServ
         {
             return NotFound();
         }
+        return Ok(result);
+    }
+
+    [HttpGet("{id}/blogs")]
+    public IActionResult GetBlogByAuthor(string id)
+    {
+        List<Models.Blog.BlogNoContent> result = blogService.GetBlogsTitleByAuthor(id);
         return Ok(result);
     }
 

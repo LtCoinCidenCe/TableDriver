@@ -2,6 +2,6 @@
 {
     public class User : UserBase
     {
-        public List<Blog.Blog>? Blogs { get; set; }
+        public List<Blog.Blog> Blogs { get; set; } = new List<Blog.Blog>();
     }
 }

@@ -19,15 +19,17 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        builder.Services.AddDbContext<UserContext>(dbContextOptions =>
-        {
-            var serverVersion = new MySqlServerVersion(new Version(5, 7, 44));
-            dbContextOptions.UseMySql(dbConnectionString, serverVersion)
-            .LogTo(Console.WriteLine, LogLevel.Information)
-            .EnableSensitiveDataLogging()
-            .EnableDetailedErrors();
-        });
+        //builder.Services.AddDbContext<UserContext>(dbContextOptions =>
+        //{
+        //    var serverVersion = new MySqlServerVersion(new Version(5, 7, 44));
+        //    dbContextOptions.UseMySql(dbConnectionString, serverVersion)
+        //    .LogTo(Console.WriteLine, LogLevel.Information)
+        //    .EnableSensitiveDataLogging()
+        //    .EnableDetailedErrors();
+        //});
+        builder.Services.AddDbContext<UserContext>();
         builder.Services.AddScoped<UserService>();
+        builder.Services.AddScoped<BlogService>();
 
         var app = builder.Build();
 

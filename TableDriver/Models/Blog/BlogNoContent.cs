@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace TableDriver.Models.Blog
 {
@@ -10,6 +11,7 @@ namespace TableDriver.Models.Blog
 
         [Column(name: "authorid")]
         [InverseProperty("Blogs")]
+        [JsonIgnore]
         [DeleteBehavior(DeleteBehavior.NoAction)]
         public User.User? Author { get; set; }
 
