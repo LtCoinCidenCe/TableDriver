@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TableDriver.DBContexts;
-using TableDriver.Models;
+using TableDriver.Models.User;
 
 namespace TableDriver.Services;
 

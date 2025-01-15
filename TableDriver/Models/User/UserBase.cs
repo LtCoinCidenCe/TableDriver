@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using TableDriver.Models.Misc;
-using Microsoft.EntityFrameworkCore;
 
-namespace TableDriver.Models
+namespace TableDriver.Models.User
 {
     // This dictates the database columns
-    public abstract class UserBase:UserNonSensitive
+    public abstract class UserBase : UserNonSensitive
     {
         public ulong ID { get; set; }
 
@@ -21,7 +20,7 @@ namespace TableDriver.Models
 
         public Gender Gender { get; set; } = Gender.secret;
 
-        [Obsolete(message:"It doesn't work")]
+        [Obsolete(message: "It doesn't work")]
         public T TransformToType<T>() where T : UserBase
         {
             // can't do this

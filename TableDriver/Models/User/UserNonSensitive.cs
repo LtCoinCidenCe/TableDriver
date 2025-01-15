@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace TableDriver.Models
+namespace TableDriver.Models.User
 {
     [Index(nameof(Username), IsUnique = true)]
     [Index("DisplayName")]

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TableDriver.Models;
-using TableDriver.Utilities;
+using TableDriver.Models.User;
 
 namespace TableDriver.DBContexts;
 
@@ -14,6 +13,11 @@ public class UserContext : DbContext
     {
         logger = dilogger;
     }
+
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //{
+    //    base.OnConfiguring(optionsBuilder);
+    //}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

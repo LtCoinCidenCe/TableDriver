@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using System.Text;
-using TableDriver.Models;
 using TableDriver.Models.Misc;
+using TableDriver.Models.User;
 using TableDriver.Services;
 
 namespace TableDriver.Controllers;
