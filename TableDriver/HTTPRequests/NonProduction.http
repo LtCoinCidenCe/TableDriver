@@ -3,3 +3,6 @@
 
 DELETE {{host}}/api/NonProduction
 Content-Type: application/json
+###
+POST {{host}}/api/NonProduction
+Content-Type: application/json

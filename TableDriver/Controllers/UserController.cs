@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using TableDriver.Models.User;
 using TableDriver.Services;
+using TableDriver.Utilities;
 
 namespace TableDriver.Controllers;
 
@@ -44,7 +45,7 @@ public class UserController(ILogger<UserController> logger, UserService userServ
             Username = newUser.Username,
             DisplayName = newUser.DisplayName,
             Introduction = newUser.Introduction,
-            Passhash = SHA256.HashData(Encoding.UTF8.GetBytes(newUser.Password + "SuperSalt")),
+            Passhash = PasswordHashing.GetBytes(newUser.Password),
             Gender = newUser.Gender,
         };
         User? result = userService.CreateNewUser(entity);
