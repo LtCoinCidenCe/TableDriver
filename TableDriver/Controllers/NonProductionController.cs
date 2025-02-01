@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TableDriver.DBContexts;
 using TableDriver.Models.Misc;
+using TableDriver.Models.User;
 using TableDriver.Utilities;
 
 namespace TableDriver.Controllers
@@ -19,22 +20,22 @@ namespace TableDriver.Controllers
         }
 
         [HttpPost]
-        public IActionResult SeedingDatabase()
+        public UserNonSensitive[] SeedingDatabase()
         {
-            List<Models.User.User> users = [
-                new Models.User.User(){
+            List<User> users = [
+                new User(){
                     Username="firstUser",
                     DisplayName="FirstGuy",
                     Gender= Gender.male,
                     Introduction="The first person to be on the tables.",
                     Passhash= PasswordHashing.GetBytes("theno.1")},
-                new Models.User.User(){
+                new User(){
                     Username="fernando",
                     DisplayName="Fernando",
                     Gender= Gender.male,
                     Introduction="Wow",
                     Passhash= PasswordHashing.GetBytes("alonso")},
-                new Models.User.User(){
+                new User(){
                     Username="kimiraikkonen",
                     DisplayName="Kimi Räikkönen",
                     Gender= Gender.male,
@@ -43,7 +44,8 @@ namespace TableDriver.Controllers
                 ];
             userContext.User.AddRange(users);
             userContext.SaveChanges();
-            return Ok();
+            UserNonSensitive kimi = users[2].GetDataTransferObject();
+            return users.ToArray();
         }
     }
 }

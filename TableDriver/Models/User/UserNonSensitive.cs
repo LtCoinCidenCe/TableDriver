@@ -17,5 +17,15 @@ namespace TableDriver.Models.User
 
         [MaxLength(120)]
         public string Introduction { get; set; } = string.Empty;
+
+        public UserNonSensitive GetDataTransferObject()
+        {
+            return new UserNonSensitive
+            {
+                Username = Username,
+                DisplayName = DisplayName,
+                Introduction = Introduction,
+            };
+        }
     }
 }
