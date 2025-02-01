@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using TableDriver.DBContexts;
 using TableDriver.Services;
 using TableDriver.Utilities;

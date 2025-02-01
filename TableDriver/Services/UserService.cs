@@ -48,10 +48,8 @@ public class UserService(UserContext userContext)
 
     public User? CreateNewUser(User user)
     {
-        UserMemory userMemory = user.CloneToType<UserMemory>();
         // username is unique and failed insertion still does auto increment on id
         userContext.User.Add(user);
-        userContext.UserMemory.Add(userMemory);
         try
         {
             userContext.SaveChanges();
@@ -67,6 +65,10 @@ public class UserService(UserContext userContext)
                 return null;
             }
         }
+        // copy id from real database to memory database
+        UserMemory userMemory = user.CloneToType<UserMemory>();
+        userContext.UserMemory.Add(userMemory);
+        userContext.SaveChanges();
         return user;
     }
 
