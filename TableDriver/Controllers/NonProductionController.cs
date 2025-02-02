@@ -1,15 +1,15 @@
 ﻿#if DEBUG
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TableDriver.DBContexts;
 using TableDriver.Models.Misc;
 using TableDriver.Models.User;
-using TableDriver.Utilities;
 
 namespace TableDriver.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NonProductionController(UserContext userContext) : ControllerBase
+    public class NonProductionController(UserContext userContext, PasswordHasher<UserBase> passwordHasher) : ControllerBase
     {
         [HttpDelete]
         public ActionResult ClearInitDatabase()
@@ -28,24 +28,31 @@ namespace TableDriver.Controllers
                     DisplayName="FirstGuy",
                     Gender= Gender.male,
                     Introduction="The first person to be on the tables.",
-                    Passhash= PasswordHashing.GetBytes("theno.1")},
+                    Passhash= "theno.1"},
                 new User(){
                     Username="fernando",
                     DisplayName="Fernando",
                     Gender= Gender.male,
                     Introduction="Wow",
-                    Passhash= PasswordHashing.GetBytes("alonso")},
+                    Passhash= "alonso"},
                 new User(){
                     Username="kimiraikkonen",
                     DisplayName="Kimi Räikkönen",
                     Gender= Gender.male,
                     Introduction="Finnish F1 driver",
-                    Passhash= PasswordHashing.GetBytes("eimuuta")},
+                    Passhash= "eimuuta"},
                 ];
+            users.ForEach(oneUser => oneUser.Passhash = passwordHasher.HashPassword(oneUser, oneUser.Passhash));
             userContext.User.AddRange(users);
             userContext.SaveChanges();
             UserNonSensitive kimi = users[2].GetDataTransferObject();
             return users.ToArray();
+        }
+
+        [HttpGet]
+        public string GetHash([FromQuery] string pswd)
+        {
+            return passwordHasher.HashPassword(null, pswd);
         }
     }
 }

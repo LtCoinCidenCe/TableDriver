@@ -9,8 +9,9 @@ namespace TableDriver.Models.User
     {
         public ulong ID { get; set; }
 
-        [MaxLength(32)]
-        public byte[] Passhash { get; set; } = new byte[32];
+        // PasswordHasher gives output length 84
+        [MaxLength(85)]
+        public string Passhash { get; set; } = string.Empty;
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedAt { get; set; }

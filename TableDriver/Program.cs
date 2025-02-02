@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using TableDriver.DBContexts;
+using TableDriver.Models.User;
 using TableDriver.Services;
 using TableDriver.Utilities;
 
@@ -29,6 +32,7 @@ public class Program
         builder.Services.AddDbContext<UserContext>();
         builder.Services.AddScoped<UserService>();
         builder.Services.AddScoped<BlogService>();
+        builder.Services.AddSingleton(new PasswordHasher<UserBase>(Options.Create(new PasswordHasherOptions() { IterationCount = 8 })));
 
         var app = builder.Build();
 
@@ -39,7 +43,7 @@ public class Program
             app.UseSwaggerUI();
         }
 
-        app.UseHttpsRedirection();
+        // app.UseHttpsRedirection();
 
         app.UseAuthorization();
 

@@ -1,16 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography;
-using System.Text;
 using TableDriver.Models.User;
 using TableDriver.Services;
-using TableDriver.Utilities;
 
 namespace TableDriver.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UserController(ILogger<UserController> logger, UserService userService, BlogService blogService) : ControllerBase
+public class UserController(ILogger<UserController> logger, UserService userService, BlogService blogService, PasswordHasher<UserBase> passwordHasher) : ControllerBase
 {
     [HttpGet]
     public IEnumerable<UserNonSensitive> GetAllUsers()
@@ -45,9 +43,9 @@ public class UserController(ILogger<UserController> logger, UserService userServ
             Username = newUser.Username,
             DisplayName = newUser.DisplayName,
             Introduction = newUser.Introduction,
-            Passhash = PasswordHashing.GetBytes(newUser.Password),
             Gender = newUser.Gender,
         };
+        entity.Passhash = passwordHasher.HashPassword(entity, newUser.Password);
         User? result = userService.CreateNewUser(entity);
         if (result is null)
         {
