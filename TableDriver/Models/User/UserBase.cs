@@ -4,7 +4,9 @@ using TableDriver.Models.Misc;
 
 namespace TableDriver.Models.User
 {
-    // This dictates the database columns
+    /// <summary>
+    /// This dictates the database columns.
+    /// </summary>
     public abstract class UserBase : UserNonSensitive, Common
     {
         public ulong ID { get; set; }

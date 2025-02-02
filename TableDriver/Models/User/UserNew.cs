@@ -4,7 +4,9 @@ using TableDriver.Models.Misc;
 
 namespace TableDriver.Models.User
 {
-    // This is for endpoints only
+    /// <summary>
+    /// This is for endpoints only
+    /// </summary>
     public class UserNew : UserNonSensitive
     {
         [MinLength(3)]

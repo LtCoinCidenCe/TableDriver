@@ -3,7 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TableDriver.Models.User
 {
-    // This is shared between database and endpoints
+    /// <summary>
+    /// This is shared between database and endpoints.
+    /// All information is "publicly available".
+    /// </summary>
     [Index(nameof(Username), IsUnique = true)]
     [Index("DisplayName")]
     public class UserNonSensitive

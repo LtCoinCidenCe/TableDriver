@@ -32,7 +32,7 @@ public class Program
         builder.Services.AddDbContext<UserContext>();
         builder.Services.AddScoped<UserService>();
         builder.Services.AddScoped<BlogService>();
-        builder.Services.AddSingleton(new PasswordHasher<UserBase>(Options.Create(new PasswordHasherOptions() { IterationCount = 8 })));
+        builder.Services.AddScoped(factory => new PasswordHasher<UserBase>(Options.Create(new PasswordHasherOptions() { IterationCount = 8 })));
 
         var app = builder.Build();
 
