@@ -38,14 +38,7 @@ public class UserController(ILogger<UserController> logger, UserService userServ
     [HttpPost]
     public IActionResult CreateNewUser(UserNew newUser)
     {
-        User entity = new()
-        {
-            Username = newUser.Username,
-            DisplayName = newUser.DisplayName,
-            Introduction = newUser.Introduction,
-            Gender = newUser.Gender,
-        };
-        entity.Passhash = passwordHasher.HashPassword(entity, newUser.Password);
+        User entity = newUser.ToUserForStorage(passwordHasher);
         User? result = userService.CreateNewUser(entity);
         if (result is null)
         {
