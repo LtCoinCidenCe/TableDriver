@@ -21,9 +21,10 @@
   // }
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "dotnet tool install --global dotnet-ef --version 8.0.12",
+  "postCreateCommand": "dotnet tool install --global dotnet-ef --version 8.0.12 && git config --global --add safe.directory /workspaces/TableDriver",
 
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // FileSystem has something to do when it is bind mounts so it couldn't be the user vscode
   // "remoteUser": "root",
   "customizations": {
     "vscode": {

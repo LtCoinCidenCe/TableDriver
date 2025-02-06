@@ -1,8 +1,8 @@
 services:
   thetabledriver:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: dev.Dockerfile
     volumes:
       - ../:/workspaces/TableDriver
     # Overrides default command so things don't shut down after the process ends.
