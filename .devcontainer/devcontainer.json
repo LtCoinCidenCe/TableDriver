@@ -24,7 +24,7 @@
   "postCreateCommand": "dotnet tool install --global dotnet-ef",
 
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-  "remoteUser": "develop",
+  // "remoteUser": "root",
   "customizations": {
     "vscode": {
       "extensions": [
