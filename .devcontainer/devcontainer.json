@@ -31,7 +31,8 @@
       "extensions": [
         "mhutchie.git-graph",
         "ms-dotnettools.csdevkit",
-        "cweijan.vscode-database-client2"
+        "cweijan.vscode-database-client2",
+        "humao.rest-client"
       ]
     }
   }
