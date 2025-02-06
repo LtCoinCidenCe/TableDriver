@@ -4,7 +4,7 @@ services:
       context: ../
       dockerfile: dev.Dockerfile
     volumes:
-      - ../:/workspaces/TableDriver
+      - ../:/workspaces/TableDriver:cached
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
     # environment:
