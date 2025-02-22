@@ -19,7 +19,7 @@ public class UserContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         string dbConnectionString = $"Host={Env.DATABASEURL};Username=dbuser;Password=mysecretpassword;Database=TableDriver";
-        optionsBuilder.UseNpgsql($"Host={Env.DATABASEURL};Username=dbuser;Password=mysecretpassword;Database=TableDriver").EnableSensitiveDataLogging();
+        optionsBuilder.UseNpgsql($"Host={Env.DATABASEURL};Username=dbuser;Password=mysecretpassword;Database=TableDriver");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
