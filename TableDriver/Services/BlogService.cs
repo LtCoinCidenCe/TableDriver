@@ -7,7 +7,7 @@ public class BlogService(UserContext userContext)
 {
     public List<BlogNoContent> GetBlogsTitleByAuthor(string author)
     {
-        if (ulong.TryParse(author, out ulong authorulong))
+        if (long.TryParse(author, out long authorulong))
         {
             List<BlogNoContent> result = userContext.Blog.AsNoTracking().Where(row => row.AuthorID == authorulong).Select(row => new BlogNoContent() { ID = row.ID, Title = row.Title, AuthorID = row.AuthorID, Author = row.Author }).ToList();
             return result;

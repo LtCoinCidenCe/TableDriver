@@ -9,17 +9,15 @@ namespace TableDriver.Models.User
     /// </summary>
     public abstract class UserBase : UserNonSensitive, Common
     {
-        public ulong ID { get; set; }
+        public long ID { get; set; }
 
         // PasswordHasher gives output length 84
         [MaxLength(85)]
         public string Passhash { get; set; } = string.Empty;
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedAt { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime LastUpdatedAt { get; set; }
+        public DateTime LastUpdatedAt { get; set; } = DateTime.UtcNow;
 
         public Gender Gender { get; set; } = Gender.secret;
 

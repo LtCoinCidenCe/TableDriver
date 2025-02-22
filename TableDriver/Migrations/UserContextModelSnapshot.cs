@@ -2,8 +2,8 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TableDriver.DBContexts;
 
 #nullable disable
@@ -18,30 +18,36 @@ namespace TableDriver.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.11")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("TableDriver.Models.Blog.Blog", b =>
                 {
-                    b.Property<ulong>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint unsigned");
+                        .HasColumnType("bigint");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<ulong>("ID"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("ID"));
 
-                    b.Property<ulong>("AuthorID")
-                        .HasColumnType("bigint unsigned")
+                    b.Property<long>("AuthorID")
+                        .HasColumnType("bigint")
                         .HasColumnName("authorid");
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("LastUpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(60)
-                        .HasColumnType("varchar(60)");
+                        .HasColumnType("character varying(60)");
 
                     b.HasKey("ID");
 
@@ -52,46 +58,42 @@ namespace TableDriver.Migrations
 
             modelBuilder.Entity("TableDriver.Models.User.User", b =>
                 {
-                    b.Property<ulong>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint unsigned");
+                        .HasColumnType("bigint");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<ulong>("ID"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("ID"));
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<DateTime>("CreatedAt"));
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("now()");
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
                         .HasMaxLength(60)
-                        .HasColumnType("varchar(60)");
+                        .HasColumnType("character varying(60)");
 
                     b.Property<int>("Gender")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Introduction")
                         .IsRequired()
                         .HasMaxLength(120)
-                        .HasColumnType("varchar(120)");
+                        .HasColumnType("character varying(120)");
 
                     b.Property<DateTime>("LastUpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime(6)");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime>("LastUpdatedAt"));
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Passhash")
                         .IsRequired()
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85)");
+                        .HasColumnType("character varying(85)");
 
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(57)
-                        .HasColumnType("varchar(57)");
+                        .HasColumnType("character varying(57)");
 
                     b.HasKey("ID");
 
@@ -105,46 +107,40 @@ namespace TableDriver.Migrations
 
             modelBuilder.Entity("TableDriver.Models.User.UserMemory", b =>
                 {
-                    b.Property<ulong>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint unsigned");
+                        .HasColumnType("bigint");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<ulong>("ID"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("ID"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<DateTime>("CreatedAt"));
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
                         .HasMaxLength(60)
-                        .HasColumnType("varchar(60)");
+                        .HasColumnType("character varying(60)");
 
                     b.Property<int>("Gender")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Introduction")
                         .IsRequired()
                         .HasMaxLength(120)
-                        .HasColumnType("varchar(120)");
+                        .HasColumnType("character varying(120)");
 
                     b.Property<DateTime>("LastUpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime(6)");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime>("LastUpdatedAt"));
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Passhash")
                         .IsRequired()
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85)");
+                        .HasColumnType("character varying(85)");
 
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(57)
-                        .HasColumnType("varchar(57)");
+                        .HasColumnType("character varying(57)");
 
                     b.HasKey("ID");
 
@@ -154,8 +150,6 @@ namespace TableDriver.Migrations
                         .IsUnique();
 
                     b.ToTable("UserMemory");
-
-                    b.HasAnnotation("MySql:StoreOptions", "engine=MEMORY");
                 });
 
             modelBuilder.Entity("TableDriver.Models.Blog.Blog", b =>

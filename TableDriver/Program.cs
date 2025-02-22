@@ -10,6 +10,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
+        // spin up
         string dbConnectionString = $"server={Env.DATABASEURL};port=3306;database=TableDriver;uid=root;password=mysecretpassword;SslMode=Disabled";
 
         var builder = WebApplication.CreateBuilder(args);

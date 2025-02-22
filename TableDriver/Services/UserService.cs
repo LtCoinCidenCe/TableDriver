@@ -12,7 +12,7 @@ public class UserService(UserContext userContext)
         // with contains being SQL IN
         // with Select filter being SQL SELECT
         // just so beautiful
-        List<ulong> smallIDs = new List<ulong>() { 1, 2, 3, 4, 5, 6, 7, 8 };
+        List<long> smallIDs = [ 1, 2, 3, 4, 5, 6, 7, 8 ];
         return userContext.User
             .AsNoTracking()
             .Where(row => smallIDs.Contains(row.ID))
@@ -26,7 +26,7 @@ public class UserService(UserContext userContext)
 
     public UserBase? GetUserbyID(string sid)
     {
-        if (ulong.TryParse(sid, out var id))
+        if (long.TryParse(sid, out var id))
         {
             UserMemory? inMemory = userContext.UserMemory.SingleOrDefault(u => u.ID == id);
             if (inMemory is not null)
@@ -75,7 +75,7 @@ public class UserService(UserContext userContext)
     public int ModifyIntroduction(string userid, string newIntro)
     {
         // userid can possibly be an id so check first
-        if (ulong.TryParse(userid, out var id))
+        if (long.TryParse(userid, out var id))
         {
             int callupdate = userContext.User.Where(user => user.ID == id)
                 .ExecuteUpdate(setter => setter.SetProperty(row => row.Introduction, newIntro));
