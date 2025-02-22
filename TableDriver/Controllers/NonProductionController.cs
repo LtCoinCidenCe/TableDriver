@@ -1,4 +1,5 @@
 ﻿#if DEBUG
+using System.Text.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TableDriver.DBContexts;
@@ -22,27 +23,19 @@ namespace TableDriver.Controllers
         [HttpPost]
         public UserNonSensitive[] SeedingDatabase()
         {
-            List<User> users = [
-                new User(){
-                    Username="firstUser",
-                    DisplayName="FirstGuy",
-                    Gender= Gender.male,
-                    Introduction="The first person to be on the tables.",
-                    Passhash= "theno.1"},
-                new User(){
-                    Username="fernando",
-                    DisplayName="Fernando",
-                    Gender= Gender.male,
-                    Introduction="Wow",
-                    Passhash= "alonso"},
-                new User(){
-                    Username="kimiraikkonen",
-                    DisplayName="Kimi Räikkönen",
-                    Gender= Gender.male,
-                    Introduction="Finnish F1 driver",
-                    Passhash= "eimuuta"},
-                ];
-            users.ForEach(oneUser => oneUser.Passhash = passwordHasher.HashPassword(oneUser, oneUser.Passhash));
+            // var ddir = Directory.GetCurrentDirectory();
+            FileStream fileStream = new("MOCK_DATA.json", FileMode.Open, FileAccess.Read);
+            List<User>? users = JsonSerializer.Deserialize<List<User>>(fileStream);
+            if(users is null)
+            {
+                throw new Exception("mock json data returns null");
+            }
+            users.ForEach(oneUser =>
+            {
+                oneUser.Passhash = passwordHasher.HashPassword(oneUser, oneUser.Passhash);
+                oneUser.CreatedAt = DateTime.UtcNow;
+                oneUser.LastUpdatedAt = oneUser.CreatedAt;
+            });
             userContext.User.AddRange(users);
             userContext.SaveChanges();
             UserNonSensitive kimi = users[2].GetDataTransferObject();
