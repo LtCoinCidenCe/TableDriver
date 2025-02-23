@@ -9,7 +9,16 @@ public class BlogService(UserContext userContext)
     {
         if (long.TryParse(author, out long authorulong))
         {
-            List<BlogNoContent> result = userContext.Blog.AsNoTracking().Where(row => row.AuthorID == authorulong).Select(row => new BlogNoContent() { ID = row.ID, Title = row.Title, AuthorID = row.AuthorID, Author = row.Author }).ToList();
+            List<BlogNoContent> result = (from blog in userContext.Blog.AsNoTracking()
+                                          where blog.AuthorID == authorulong
+                                          select new BlogNoContent() { ID = blog.ID, AuthorID = blog.AuthorID, Title = blog.Title })
+                                          .ToList();
+
+            // doesn't work anymore in postgres, select introduce joining User for no reason
+            // List<BlogNoContent> result = userContext.Blog.AsNoTracking()
+            // .Where(row => row.AuthorID == authorulong)
+            // .Select(row => new BlogNoContent() { ID = row.ID, Title = row.Title, AuthorID = row.AuthorID, Author = row.Author })
+            // .ToList();
             return result;
         }
         {

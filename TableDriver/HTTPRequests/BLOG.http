@@ -1,0 +1,4 @@
+@host=http://localhost:5192
+
+GET {{host}}/User/3/blogs
+###
