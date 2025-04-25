@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using TableDriver.DBContexts;
@@ -45,6 +46,24 @@ public class Program
         }
 
         // app.UseHttpsRedirection();
+
+        app.Use((context, next) =>
+        {
+            // using var scope = app.Services.CreateScope();
+            // ILogger? logger = scope.ServiceProvider.GetService<ILogger>();
+            ILogger? logger = app.Services.GetService<ILogger<Program>>(); // you must get a generic logger
+            if (logger is null)
+            {
+                throw new Exception("why the hell this can be null?");
+            }
+            logger.Log(LogLevel.Debug, "Before: " + JsonSerializer.Serialize(context.Response.Headers));
+            var result = next(context);
+            logger.Log(LogLevel.Debug, "After: " + JsonSerializer.Serialize(context.Response.HasStarted));
+            // yes this is it. HasStarted
+            // if controllers don't handle it, this is false
+
+            return result;
+        });
 
         app.UseAuthorization();
 
