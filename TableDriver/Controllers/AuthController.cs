@@ -36,6 +36,10 @@ public class AuthController(ILogger<AuthController> logger) : ControllerBase
 
     public class TokenResponse
     {
+        /// <summary>
+        /// <para>Finally You have the access_token on TableDriver for your files in DropBox.</para>
+        /// <para>Now goto OAUTH.http and paste the access_token to retrieve anything from your account.</para>
+        /// </summary>
         public string access_token { get; set; } = string.Empty;
         public int expires_in { get; set; }
         public string token_type { get; set; } = string.Empty;
@@ -50,6 +54,8 @@ public class AuthController(ILogger<AuthController> logger) : ControllerBase
     [HttpGet]
     public async Task<IActionResult> ReceiveAuthCode([FromQuery] string code, [FromQuery] string? state)
     {
+        // The user has agreed that this app TableDriver can access my data on DropBox (done in webBrowser).
+        // So string code is the proof
         var tokenRequest = new TokenRequest()
         {
             code = code,
@@ -57,9 +63,10 @@ public class AuthController(ILogger<AuthController> logger) : ControllerBase
         };
         Dictionary<string, string> payload = tokenRequest.ToDictionary();
         logger.LogInformation(JsonSerializer.Serialize(tokenRequest.ToDictionaryR()));
-
         FormUrlEncodedContent formUrlEncodedContent = new(payload);
-        HttpResponseMessage postA = await httpClient.PostAsync(DROPBOX_TOKEN, formUrlEncodedContent);
+        // The payload formUrlEncodedContent is created.
+
+        HttpResponseMessage postA = await httpClient.PostAsync(DROPBOX_TOKEN_URL, formUrlEncodedContent);
 
         string stringResult = await postA.Content.ReadAsStringAsync();
         logger.LogInformation(stringResult);
@@ -75,10 +82,20 @@ public class AuthController(ILogger<AuthController> logger) : ControllerBase
         return beforeExtension + Uri.EscapeDataString(REDIRECT_URI);
     }
 
+    /// <summary>
+    /// Requested from DropBox. A representation of our TableDriver in DropBox.
+    /// </summary>
     public const string APP_KEY = "5x6rdzdy05urbfe";
-    public const string APP_SECRET = "peknv0iotkj346r";
+    /// <summary>
+    /// <para>After DropBox authorization. I want the user browser to go back to ReceiveAuthCode (or a webpage of TableDriver)</para>
+    /// <para>You see there at ReceiveAuthCode it takes the code, so it needs to be encrypted in https</para>
+    /// <para>Or localhost, where your browser talks to localhost so no security issue.
+    /// </summary>
     public const string REDIRECT_URI = "http://localhost:5192/api/auth";
-    public const string DROPBOX_TOKEN = "https://api.dropboxapi.com/oauth2/token";
+    public const string DROPBOX_TOKEN_URL = "https://api.dropboxapi.com/oauth2/token";
+
+    // confidential
+    public const string APP_SECRET = "peknv0iotkj346r";
 
     public static HttpClient httpClient = new HttpClient() { Timeout = TimeSpan.FromSeconds(20) };
 }
