@@ -50,7 +50,7 @@
     "migrations add": {
       "commandName": "Executable",
       "executablePath": "dotnet",
-      "commandLineArgs": "ef migrations add PostgresFirst",
+      "commandLineArgs": "ef migrations add UserDisplayNameHistory",
       "workingDirectory": "$(ProjectDir)",
       "environmentVariables": {
         "DATABASEURL": "localhost",

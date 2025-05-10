@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TableDriver.Models.Blog;
 using TableDriver.Models.User;
+using TableDriver.Models.User.Augmentations;
 using TableDriver.Utilities;
 
 namespace TableDriver.DBContexts;
@@ -28,6 +29,7 @@ public class UserContext : DbContext
     }
 
     public DbSet<User> User => Set<User>();
+    public DbSet<UserDisplayNameHistory> UserDisplayNameHistory => Set<UserDisplayNameHistory>();
     public DbSet<UserMemory> UserMemory => Set<UserMemory>();
     public DbSet<Blog> Blog => Set<Blog>();
 }
