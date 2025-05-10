@@ -62,4 +62,23 @@ public class UserController(ILogger<UserController> logger, UserService userServ
         // should never get here
         throw new Exception("should not update so many users' introduction");
     }
+
+    [HttpPatch("{userid}/displayname")]
+    public IActionResult ModifyDisplayName([FromRoute] string userid, string newDisplayName)
+    {
+        int result = userService.ModifyDisplayName(userid, newDisplayName);
+        if (result == 0)
+        {
+            return NotFound();
+        }
+        else if (result == 1)
+        {
+            return Ok();
+        }
+        else if (result == 2)
+        {
+            return BadRequest();
+        }
+        throw new Exception("modifydisplayname guard, too many updated rows");
+    }
 }

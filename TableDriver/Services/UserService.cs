@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using TableDriver.DBContexts;
 using TableDriver.Models.User;
+using TableDriver.Models.User.Augmentations;
 
 namespace TableDriver.Services;
 
@@ -12,7 +14,7 @@ public class UserService(UserContext userContext)
         // with contains being SQL IN
         // with Select filter being SQL SELECT
         // just so beautiful
-        List<long> smallIDs = [ 1, 2, 3, 4, 5, 6, 7, 8 ];
+        List<long> smallIDs = [1, 2, 3, 4, 5, 6, 7, 8];
         return userContext.User
             .AsNoTracking()
             .Where(row => smallIDs.Contains(row.ID))
@@ -87,5 +89,47 @@ public class UserService(UserContext userContext)
                 .ExecuteUpdate(setter => setter.SetProperty(row => row.Introduction, newIntro));
             return callupdate;
         }
+    }
+
+    public int ModifyDisplayName(string userid, string newDisplayName)
+    {
+        User? uuu;
+        if (long.TryParse(userid, out var id))
+        {
+            uuu = userContext.User.SingleOrDefault(user => user.ID == id);
+        }
+        else
+        {
+            uuu = userContext.User.SingleOrDefault(user => user.Username == userid);
+        }
+        if (uuu is null)
+        {
+            return 0;
+        }
+        var history = new UserDisplayNameHistory()
+        {
+            User = uuu,
+            LastUpdatedAt = uuu.LastUpdatedAt,
+            DisplayName = uuu.DisplayName
+        };
+        userContext.UserDisplayNameHistory.Add(history);
+        uuu.DisplayName = newDisplayName;
+        uuu.LastUpdatedAt = DateTime.UtcNow;
+
+
+        ValidationContext validContext = new ValidationContext(uuu);
+        var validationResults = new List<ValidationResult>();
+        var attributes = typeof(User)
+            .GetProperty("DisplayName")
+            .GetCustomAttributes(false)
+            .OfType<ValidationAttribute>()
+            .ToArray();
+        var vvv = Validator.TryValidateObject(uuu, validContext, validationResults, true);
+        if (!vvv)
+        {
+            return 2;
+        }
+        userContext.SaveChanges();
+        return 1;
     }
 }
