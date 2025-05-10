@@ -99,7 +99,7 @@ public class UserService(UserContext userContext)
         {
             User doll = new() { DisplayName = newDisplayName };
             ValidationContext validationContext = new(doll);
-            PropertyInfo? property = typeof(User).GetType().GetProperty("DisplayName");
+            PropertyInfo? property = typeof(User).GetProperty("DisplayName");
             if (property is null)
                 return 99;
             var attrs = property.GetCustomAttributes(true).OfType<ValidationAttribute>();

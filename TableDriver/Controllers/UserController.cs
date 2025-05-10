@@ -66,6 +66,7 @@ public class UserController(ILogger<UserController> logger, UserService userServ
     [HttpPatch("{userid}/displayname")]
     public IActionResult ModifyDisplayName([FromRoute] string userid, string newDisplayName)
     {
+        // var l = newDisplayName.Length;
         int result = userService.ModifyDisplayName(userid, newDisplayName);
         if (result == 0)
         {
