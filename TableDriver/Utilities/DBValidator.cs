@@ -8,7 +8,7 @@ public static class DBValidator
   {
     ValidationContext validationContext = new ValidationContext(obj);
     ValidationResults = new List<ValidationResult>();
-    var result = Validator.TryValidateObject(obj, validationContext, ValidationResults);
+    var result = Validator.TryValidateObject(obj, validationContext, ValidationResults, true);
     return result;
   }
 }
