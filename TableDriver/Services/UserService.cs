@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TableDriver.DBContexts;
 using TableDriver.Models.User;
 using TableDriver.Models.User.Augmentations;
+using TableDriver.Utilities;
 
 namespace TableDriver.Services;
 
@@ -116,15 +117,7 @@ public class UserService(UserContext userContext)
         uuu.DisplayName = newDisplayName;
         uuu.LastUpdatedAt = DateTime.UtcNow;
 
-
-        ValidationContext validContext = new ValidationContext(uuu);
-        var validationResults = new List<ValidationResult>();
-        var attributes = typeof(User)
-            .GetProperty("DisplayName")
-            .GetCustomAttributes(false)
-            .OfType<ValidationAttribute>()
-            .ToArray();
-        var vvv = Validator.TryValidateObject(uuu, validContext, validationResults, true);
+        bool vvv = DBValidator.ValidateDBObject(uuu, out var invalids);
         if (!vvv)
         {
             return 2;
