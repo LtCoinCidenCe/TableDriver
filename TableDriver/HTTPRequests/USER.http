@@ -4,3 +4,8 @@ GET {{host}}/User
 ###
 GET {{host}}/User/3
 ###
+PATCH {{host}}/User/63/displayname?newDisplayName=correctUsage
+###
+PATCH {{host}}/User/63/displayname?newDisplayName=一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十
+###
+PATCH {{host}}/User/63/displayname?newDisplayName=s
