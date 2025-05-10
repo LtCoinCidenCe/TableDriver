@@ -45,7 +45,7 @@ namespace TableDriver.Controllers
         [HttpGet]
         public string GetHash([FromQuery] string pswd)
         {
-            return passwordHasher.HashPassword(null, pswd);
+            return passwordHasher.HashPassword(new User(), pswd);
         }
     }
 }
